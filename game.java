@@ -94,7 +94,6 @@ class Game extends JFrame
 	}
 	void setMineIcon(JButton a)
 	{
-		// grids[r][c].setIcon(new ImageIcon(getClass().getResource()));
 		ImageIcon icon = new ImageIcon("./icon.png");
 		Image img = icon.getImage(); 
    		Image newimg = img.getScaledInstance( CELL_LENGTH, CELL_LENGTH,  java.awt.Image.SCALE_SMOOTH );  
@@ -156,8 +155,8 @@ class Game extends JFrame
 				for(int i = r-1; i < r+2; i++)
 					for(int j = c-1; j < c+2; j++)
 						if(i > -1 && i < rows && j > -1 && j < columns)
-							// this.recursiveClick(grids[i][j],0,i,j);
-							grids[i][j].doClick();
+							this.recursiveClick(grids[i][j],0,i,j);
+							// grids[i][j].doClick();
 			}
 			else
 			{
@@ -172,6 +171,14 @@ class Game extends JFrame
 
 		void gameOver()
 		{
+			for(int i = 0; i < rows; i++)
+					for(int j = 0; j < columns; j++)
+					{
+						if(grids[i][j].getText()=="-1")
+							setMineIcon(grids[i][j]);
+						grids[i][j].setText("");
+						grids[i][j].setEnabled(false);
+					}
 			System.out.println("Lost");
 		}
 
@@ -182,7 +189,6 @@ class Game extends JFrame
 				for( int j = 0; j < columns; j++)
 					if(grids[i][j].getBackground()==postCellColor)
 						count+=1;
-			System.out.println(r+" "+c+" "+count);
 			if(count==rows*columns-(int)Math.sqrt(rows*columns))
 				return true;
 			return false;
