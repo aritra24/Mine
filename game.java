@@ -3,7 +3,7 @@ Program Name: Mines
 Auhtor : Aritra Basu
 Description : A game of Mines
 */
-
+package game.Mine;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
