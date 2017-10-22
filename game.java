@@ -1,3 +1,9 @@
+/*
+Program Name: Mines
+Auhtor : Aritra Basu
+Description : A game of Mines
+*/
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -192,12 +198,6 @@ class Game extends JFrame
 			}
 		}
 
-
-		// void deactivateAll()
-		// {
-			
-		// }
-
 		void gameOver()
 		{
 			for(int i = 0; i < rows; i++)
@@ -209,7 +209,6 @@ class Game extends JFrame
 						grids[i][j].setEnabled(false);
 					}
 			JOptionPane.showMessageDialog(null,"Sorry, you've lost the game","Game Over",JOptionPane.INFORMATION_MESSAGE,null);
-			// System.out.println("Lost");
 		}
 
 
