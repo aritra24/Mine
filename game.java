@@ -1,6 +1,6 @@
 /*
 Program Name: Mines
-Auhtor : Aritra Basu
+Author : Aritra Basu
 Description : A game of Mines
 */
 
