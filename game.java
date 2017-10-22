@@ -16,7 +16,6 @@ class Game extends JFrame
 	int rows=10,columns=10;
 	Random random = new Random();
 	JButton[][] grids = new JButton[rows][columns];
-	int totalZeroesCount;
 	JButton start = new JButton("start");
 	final int CELL_HEIGHT = 40, CELL_LENGTH = 40, CELL_PADDING = 5, PANEL_BORDER = 25;
 	Color backgroundColor = new Color(103,200,190);
@@ -61,11 +60,6 @@ class Game extends JFrame
 			}
 		setMines();
 		start.addActionListener(startButtonClicked);
-		//test data
-		// for(int i = 0; i< 3;i++)
-		// 	for( int j = 0; j < 3; j++)
-		// 		grids[i][j].setText("3");
-		
 		settingsPanel.add(start);
 		outerPanel.add(mainPanel);
 		outerPanel.add(settingsPanel);
@@ -96,13 +90,7 @@ class Game extends JFrame
 						for(int j = c-1; j < c+2; j++)
 							if(i > -1 && i < rows && j> -1 && j < columns && (i != r || j != c))
 								if(!grids[i][j].getText().equals("-1"))
-									grids[i][j].setText(""+(1+Integer.parseInt(grids[i][j].getText())));	
-		for(int i = 0; i < rows; i++)
-			for(int j = 0; j < columns; j++)
-				if(grids[i][j].getText().equals("0"))
-					totalZeroesCount+=1;
-		// final totalZeroesCount = totalZeroesCount;
-
+									grids[i][j].setText(""+(1+Integer.parseInt(grids[i][j].getText())));
 	}
 	void setMineIcon(JButton a)
 	{
@@ -191,10 +179,10 @@ class Game extends JFrame
 			int count=0;
 			for( int i =0; i < rows; i++)
 				for( int j = 0; j < columns; j++)
-					if(!grids[i][j].getText().equals(""))
+					if(grids[i][j].getBackground()==postCellColor)
 						count+=1;
 			System.out.println(r+" "+c+" "+count);
-			if(count==totalZeroesCount)
+			if(count==rows*columns-(int)Math.sqrt(rows*columns))
 				return true;
 			return false;
 		}
