@@ -155,8 +155,9 @@ class Game extends JFrame
 				a.setText("");
 				for(int i = r-1; i < r+2; i++)
 					for(int j = c-1; j < c+2; j++)
-						if(i > -1 && i < rows && j> -1 && j < columns)
-							this.recursiveClick(grids[i][j],0,i,j);
+						if(i > -1 && i < rows && j > -1 && j < columns)
+							// this.recursiveClick(grids[i][j],0,i,j);
+							grids[i][j].doClick();
 			}
 			else
 			{
@@ -171,7 +172,7 @@ class Game extends JFrame
 
 		void gameOver()
 		{
-			;
+			System.out.println("Lost");
 		}
 
 		boolean won(int r, int c)
