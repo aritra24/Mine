@@ -16,12 +16,7 @@ import java.time.Instant;
 
 class Game extends JFrame
 {
-
-	public static void main(String[] args) 
-	{
-		Game game = new Game();
-	}
-
+	//set variables
 	static Instant startTime,endTime;
 	boolean startedTime=false,wonCalled=false;
 	int rows=10,columns=10;
@@ -29,11 +24,13 @@ class Game extends JFrame
 	JButton[][] grids = new JButton[rows][columns];
 	JButton start = new JButton("start");
 	final int CELL_HEIGHT = 40, CELL_LENGTH = 40, CELL_PADDING = 5, PANEL_BORDER = 25;
+	
 	Color backgroundColor = new Color(103,200,190);
 	Color cellColor = new Color(134,134,134);
 	Color startColor = new Color(146,142,202);
 	Color numColor = new Color(0,0,0);
 	Color postCellColor = new Color(224,224,224);
+	
 	Border mainBorder = BorderFactory.createEmptyBorder(20, 20, 20, 20);
 	ListenForGridButton buttonClicked =new ListenForGridButton();
 	ListenForStartButton startButtonClicked = new ListenForStartButton();
@@ -45,10 +42,12 @@ class Game extends JFrame
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		JPanel mainPanel= new JPanel();
 		JPanel settingsPanel = new JPanel();
 		JPanel outerPanel = new JPanel();
 		FlowLayout outerLayout = new FlowLayout();
+		
 		outerPanel.setLayout(outerLayout);
 		mainPanel.setBorder(mainBorder);
 		GridLayout mainLayout = new GridLayout(rows, columns, CELL_PADDING, CELL_PADDING);
@@ -56,6 +55,8 @@ class Game extends JFrame
 		mainPanel.setBackground(backgroundColor);
 		settingsPanel.setBackground(backgroundColor);
 		outerPanel.setBackground(backgroundColor);
+		
+		//make buttons and set all to zero
 		for(int i = 0;i < rows;i++)
 			for(int j = 0;j < columns;j++)
 			{
@@ -72,6 +73,7 @@ class Game extends JFrame
 				grids[i][j].addActionListener(buttonClicked);
 				mainPanel.add(grids[i][j]);
 			}
+
 		setMines();
 		start.addActionListener(startButtonClicked);
 		start.setBackground(startColor);
@@ -86,11 +88,10 @@ class Game extends JFrame
 		this.setVisible(true);
 	}
 
-
+	//set the mines and increment the values around it
 	void setMines()
 	{
 		int x=(int)Math.sqrt(rows*columns);
-		// int x=1;
 		int mineCount=0;
 		while(mineCount<x)
 		{
@@ -112,7 +113,7 @@ class Game extends JFrame
 									grids[i][j].setText(""+(1+Integer.parseInt(grids[i][j].getText())));
 	}
 
-
+	//Set the Button with a Mine Icon
 	void setMineIcon(JButton a)
 	{
 		ImageIcon icon = new ImageIcon("./icon.png");
@@ -124,7 +125,7 @@ class Game extends JFrame
    		a.setDisabledIcon(icon);
 	}
 
-
+	//restart the game when start button is clicked
 	void restartGame()
 	{
 		for(int i = 0;i < rows;i++)
@@ -197,7 +198,7 @@ class Game extends JFrame
 				won();
 			}
 		}
-
+		//function when a mine is clicked
 		void gameOver()
 		{
 			for(int i = 0; i < rows; i++)
@@ -205,27 +206,28 @@ class Game extends JFrame
 					{
 						if(grids[i][j].getText()=="-1")
 							setMineIcon(grids[i][j]);
-						grids[i][j].setText("");
+						if(grids[i][j].getBackground()==cellColor)
+							grids[i][j].setText("");
 						grids[i][j].setEnabled(false);
 					}
 			JOptionPane.showMessageDialog(null,"Sorry, you've lost the game","Game Over",JOptionPane.INFORMATION_MESSAGE,null);
 		}
 
-
+		//check if the game has been won
 		boolean ifWon()
 		{
 			int count=0;
 			for( int i =0; i < rows; i++)
 				for( int j = 0; j < columns; j++)
-					if(grids[i][j].getBackground()==postCellColor)
-						count+=1;
+					if(grids[i][j].getBackground()==postCellColor)  //colour of the clicked grids are 
+						count+=1;									//changed so check the colours
 			if(count==rows*columns-(int)Math.sqrt(rows*columns))
 				return true;
 			return false;
 		}
 	}
 
-
+	//Game is won
 	void won()
 	{
 		if(!wonCalled)
@@ -253,5 +255,11 @@ class Game extends JFrame
 			startedTime=false;
 			restartGame();
 		}
+	}
+
+	//start the game
+	public static void main(String[] args) 
+	{
+		Game game = new Game();
 	}
 }
