@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 import java.time.Duration;
 import java.time.Instant;
+import java.lang.*;
 
 
 class Game extends JFrame
@@ -22,7 +23,7 @@ class Game extends JFrame
 	int rows=10,columns=10;
 	Random random = new Random();
 	JButton[][] grids = new JButton[rows][columns];
-	JButton start = new JButton("START");
+	JButton start = new JButton("start");
 	final int CELL_HEIGHT = 40, CELL_LENGTH = 40, CELL_PADDING = 5, PANEL_BORDER = 25;
 	
 	Color backgroundColor = new Color(103,200,190);
@@ -92,6 +93,7 @@ class Game extends JFrame
 	void setMines()
 	{
 		int x=(int)Math.sqrt(rows*columns);
+		// int x= 1;
 		int mineCount=0;
 		while(mineCount<x)
 		{
@@ -146,6 +148,50 @@ class Game extends JFrame
 		setMines();
 	}
 
+	void won()
+	{
+		if(!wonCalled)
+		{
+			wonCalled=true;
+			for(int i = 0; i < rows; i++)
+						for(int j = 0; j < columns; j++)
+							if(grids[i][j].getText()=="-1")
+							{
+								grids[i][j].setText("");
+								grids[i][j].setEnabled(false);
+							}
+			Duration totalTime = Duration.between(startTime,endTime);
+			try
+			{
+				//Smooth out the time taken to show the Game won Panel
+				Thread.sleep(300);
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+			String time=totalTime.toMinutes()+":"+((totalTime.toMillis()/1000)%60);
+			JOptionPane.showMessageDialog(null,"Yay, you won the game\n Time Taken = "+time,"Winning Message",JOptionPane.INFORMATION_MESSAGE,null);
+		}
+	}
+
+	public class clicker extends Thread
+	{
+		JButton tempButton;
+		int row, column;
+		clicker(JButton a, int r, int c)
+		{
+			tempButton=a;
+			row=r;
+			column=c;
+			start();
+		}
+		public void run()
+		{
+			if(tempButton.isEnabled())
+				tempButton.doClick();
+		}
+	}
 
 	class ListenForGridButton implements ActionListener
 	{
@@ -161,31 +207,39 @@ class Game extends JFrame
 				for(int j = 0; j < columns; j++)
 					if(w==grids[i][j])
 					{
-						this.recursiveClick(w,1,i,j);
+						this.recursiveClick(w,i,j);
 					}
 		}
 
 
-		void recursiveClick(JButton a, int enable,int r, int c)
+		//function when a mine is clicked
+		void recursiveClick(JButton a, int r, int c)
 		{
 			if(a.getText().equals("-1"))
 			{
+				a.setBackground(Color.red);
 				a.setEnabled(false);
-				if(enable==1)
-				{
-					setMineIcon(a);
-					gameOver();
-				}
+				setMineIcon(a);
+				gameOver();
 			}
 			else if(a.getText().equals("0"))
 			{
-				a.setBackground(postCellColor);
 				a.setEnabled(false);
+				a.setBackground(postCellColor);
 				a.setText("");
 				for(int i = r-1; i < r+2; i++)
 					for(int j = c-1; j < c+2; j++)
 						if(i > -1 && i < rows && j > -1 && j < columns)
-							this.recursiveClick(grids[i][j],0,i,j);
+							try
+							{
+								Thread.sleep(25);
+								new clicker(grids[i][j],i,j);
+								// this.recursiveClick(grids[i][j],i,j);
+							}
+							catch(InterruptedException e)
+							{
+								System.out.println(e);
+							}
 			}
 			else
 			{
@@ -198,7 +252,6 @@ class Game extends JFrame
 				won();
 			}
 		}
-		//function when a mine is clicked
 		void gameOver()
 		{
 			for(int i = 0; i < rows; i++)
@@ -228,24 +281,6 @@ class Game extends JFrame
 	}
 
 	//Game is won
-	void won()
-	{
-		if(!wonCalled)
-		{
-			wonCalled=true;
-			for(int i = 0; i < rows; i++)
-						for(int j = 0; j < columns; j++)
-							if(grids[i][j].getText()=="-1")
-							{
-								grids[i][j].setText("");
-								grids[i][j].setEnabled(false);
-							}
-			Duration totalTime = Duration.between(startTime,endTime);
-			String time=totalTime.toMinutes()+":"+((totalTime.toMillis()/1000)%60);
-			JOptionPane.showMessageDialog(null,"Yay, you won the game\n Time Taken = "+time,"Winning Message",JOptionPane.INFORMATION_MESSAGE,null);
-		}
-	}
-
 
 	class ListenForStartButton implements ActionListener
 	{
