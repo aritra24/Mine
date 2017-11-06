@@ -225,8 +225,8 @@ class Game extends JFrame
 			else if(a.getText().equals("0"))
 			{
 				a.setEnabled(false);
-				a.setBackground(postCellColor);
 				a.setText("");
+				a.setBackground(postCellColor);
 				for(int i = r-1; i < r+2; i++)
 					for(int j = c-1; j < c+2; j++)
 						if(i > -1 && i < rows && j > -1 && j < columns)
