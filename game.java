@@ -2,6 +2,8 @@
 Program Name: Mines
 Author : Aritra Basu
 Description : A game of Mines
+
+Edited By : Shreyansh Murarka
 */
 
 import javax.swing.*;
@@ -23,7 +25,7 @@ class Game extends JFrame
 	int rows=10,columns=10;
 	Random random = new Random();
 	JButton[][] grids = new JButton[rows][columns];
-	JButton start = new JButton("start");
+	JButton start = new JButton("reset");
 	final int CELL_HEIGHT = 40, CELL_LENGTH = 40, CELL_PADDING = 5, PANEL_BORDER = 25;
 	
 	Color backgroundColor = new Color(103,200,190);
