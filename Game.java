@@ -17,7 +17,7 @@ import java.time.Instant;
 import java.lang.*;
 
 
-class Game extends JFrame
+public class Game extends JFrame
 {
 	//set variables
 	static Instant startTime,endTime;
